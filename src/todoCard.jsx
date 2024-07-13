@@ -53,7 +53,7 @@ const TodoCard = () => {
     }
   };
   return (
-    <div className="flex flex-col items-center border-1 border-[#27272A] border p-3 w-[33rem] rounded-lg">
+    <div className="flex flex-col items-center border-1 border-[#27272A] border p-3 w-[33rem] rounded-lg scale-75 lg:scale-100 md:scale-100">
       <div className="flex flex-row justify-between w-[95%] items-center">
         <h1 className="text-2xl font-medium text-left text-white">
           To-Do List
