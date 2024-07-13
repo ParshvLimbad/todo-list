@@ -62,6 +62,7 @@ const TodoCard = () => {
           <a
             href="https://github.com/ParshvLimbad"
             className="flex flex-row gap-2"
+            target="_blank"
           >
             <p>By Parshv Limbad</p>
             <GitHubIcon />
