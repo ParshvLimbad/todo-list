@@ -9,7 +9,9 @@ const TodoCard = () => {
   const [isInputOk, setIsInputOk] = useState(false);
 
   useEffect(() => {
+    //sets the todolist array to a new storedTodos variable
     const storedTodos = localStorage.getItem("todolist");
+    //returns the array as if storedTodos exists
     if (storedTodos) {
       setTodoList(JSON.parse(storedTodos));
     }
@@ -18,13 +20,19 @@ const TodoCard = () => {
   const handlePostTodo = (e) => {
     e.preventDefault();
     if (todo.length > 0) {
+      // sets id and todo object to newTodo variable
       const newTodo = { id: Date.now(), todo };
+      // spread todolist, add newTodo and return new array and set equal to updatedTodoList
       const updatedTodoList = [...todolist, newTodo];
+      // set todo list to updatedTodo
       setTodoList(updatedTodoList);
+      //sets updatedTodoList to the todolist variable
       localStorage.setItem("todolist", JSON.stringify(updatedTodoList));
+      //clears input field
       setTodo("");
       setIsInputOk(false);
     } else {
+      //shows error if nothing is entered in the input field
       setIsInputOk(true);
     }
   };
