@@ -101,7 +101,7 @@ const TodoCard = () => {
             >
               <li>{listItem.todo}</li>
               <button onClick={() => handleDeleteTodo(listItem.id)}>
-                <CheckIcon />
+                <CheckIcon className="hover:color-green-500" />
               </button>
             </div>
           ))}
