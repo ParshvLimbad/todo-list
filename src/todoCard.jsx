@@ -13,11 +13,14 @@ const TodoCard = () => {
     e.preventDefault();
     try {
       if (todo.length > 0) {
-        const response = await fetch("http://localhost:8000/items", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ todo }),
-        });
+        const response = await fetch(
+          "https://todo-list-endpoint.onrender.com/items",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ todo }),
+          }
+        );
         const data = await response.json();
         setTodo("");
         setTodoList((prevList) => [...prevList, data]);
@@ -31,7 +34,9 @@ const TodoCard = () => {
   }
   async function handleFetchTodo() {
     try {
-      const response = await fetch("http://localhost:8000/items");
+      const response = await fetch(
+        "https://todo-list-endpoint.onrender.com/items"
+      );
       const items = await response.json();
       setTodoList(items);
     } catch (error) {
@@ -44,7 +49,7 @@ const TodoCard = () => {
 
   const handleDeleteTodo = async (id) => {
     try {
-      await fetch(`http://localhost:8000/items/${id}`, {
+      await fetch(`https://todo-list-endpoint.onrender.com/items/${id}`, {
         method: "DELETE",
       });
       setTodoList(todolist.filter((item) => item.id !== id));
