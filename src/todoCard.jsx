@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -9,54 +8,33 @@ const TodoCard = () => {
   const [todolist, setTodoList] = useState([]);
   const [isInputOk, setIsInputOk] = useState(false);
 
-  async function handlePostTodo(e) {
-    e.preventDefault();
-    try {
-      if (todo.length > 0) {
-        const response = await fetch(
-          "https://todo-list-endpoint.onrender.com/items",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ todo }),
-          }
-        );
-        const data = await response.json();
-        setTodo("");
-        setTodoList((prevList) => [...prevList, data]);
-        setIsInputOk(false);
-      } else {
-        setIsInputOk(true);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
-  async function handleFetchTodo() {
-    try {
-      const response = await fetch(
-        "https://todo-list-endpoint.onrender.com/items"
-      );
-      const items = await response.json();
-      setTodoList(items);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
   useEffect(() => {
-    handleFetchTodo();
+    const storedTodos = localStorage.getItem("todolist");
+    if (storedTodos) {
+      setTodoList(JSON.parse(storedTodos));
+    }
   }, []);
 
-  const handleDeleteTodo = async (id) => {
-    try {
-      await fetch(`https://todo-list-endpoint.onrender.com/items/${id}`, {
-        method: "DELETE",
-      });
-      setTodoList(todolist.filter((item) => item.id !== id));
-    } catch (error) {
-      console.error("Error:", error);
+  const handlePostTodo = (e) => {
+    e.preventDefault();
+    if (todo.length > 0) {
+      const newTodo = { id: Date.now(), todo };
+      const updatedTodoList = [...todolist, newTodo];
+      setTodoList(updatedTodoList);
+      localStorage.setItem("todolist", JSON.stringify(updatedTodoList));
+      setTodo("");
+      setIsInputOk(false);
+    } else {
+      setIsInputOk(true);
     }
   };
+
+  const handleDeleteTodo = (id) => {
+    const updatedTodoList = todolist.filter((item) => item.id !== id);
+    setTodoList(updatedTodoList);
+    localStorage.setItem("todolist", JSON.stringify(updatedTodoList));
+  };
+
   return (
     <div className="flex flex-col items-center border-1 border-[#27272A] border p-3 w-[33rem] rounded-lg scale-75 lg:scale-100 md:scale-100">
       <div className="flex flex-row justify-between w-[95%] items-center">
@@ -68,6 +46,7 @@ const TodoCard = () => {
             href="https://github.com/ParshvLimbad"
             className="flex flex-row gap-2"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <p>By Parshv Limbad</p>
             <GitHubIcon />
@@ -83,7 +62,7 @@ const TodoCard = () => {
           onChange={(e) => setTodo(e.target.value)}
           className="w-[80%] rounded-[4px] px-2 border border-1 border-[#27272A] outline-none focus:border-gray-800 hover:border-gray-800 duration-300 ease-in-out bg-black text-[#fafafa]"
           autoFocus
-          maxlength="40"
+          maxLength="40"
         />
         <button
           type="submit"
